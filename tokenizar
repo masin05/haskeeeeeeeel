@@ -1,0 +1,14 @@
+import Data.Char
+
+data Token = Num Float | Op Char deriving ( Show , Eq )
+data Arbol a = Vacio | Nodo a ( Arbol a ) ( Arbol a ) deriving ( Show , Eq )
+
+--TOKENIZACIÒN
+
+tokenizar :: String -> [Token]
+tokenizar [] = []
+tokenizar (x:xs)
+    | isSpace x = tokenizar xs
+    | isDigit x = let (x1, x2) = span isDigit (x:xs)
+                  in Num (read x1) : tokenizar x2
+    | otherwise = Op x : tokenizar xs
