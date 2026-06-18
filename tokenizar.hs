@@ -1,6 +1,6 @@
 import Data.Char
 
---TOKENIZACIÒN
+--TOKENIZACION
 
 data Token = Num Float | Op Char deriving ( Show , Eq )
 
