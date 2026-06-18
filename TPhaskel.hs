@@ -49,6 +49,10 @@ precedencia '+' = 1
 precedencia '-' = 1
 precedencia _ = 0
 
+-- 1er empty pila de operadores
+-- 
+
 shuntingYard :: String -> Arbol Token
-shuntingYard xs = identificar (tokenizar xs)
-    where identificar = precedencia 
+shuntingYard xs = identificar (tokenizar xs) empty empty
+    where 
+        identificar [] [] ArbolFinal = ArbolFinal
