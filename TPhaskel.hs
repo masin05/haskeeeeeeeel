@@ -17,18 +17,20 @@ tokenizar (x:xs)
 data Arbol a = Vacio | Nodo a ( Arbol a ) ( Arbol a ) deriving ( Show , Eq )
 
 class Stack s where
- sEmpty :: s a
+ empty :: s a
  push :: a -> s a -> s a
  top :: s a -> a
  pop :: s a -> s a
- sIsEmpty :: s a -> Bool
+ isEmpty :: s a -> Bool
 
 instance Stack [] where
- sEmpty = []
+ empty = []
  push = (:)
  top = head
  pop = tail
- sIsEmpty = null
+ isEmpty = null
+ 
+data Pila a = PTop a (Pila a) | PEmpty deriving (Show, Eq)
 
 precedencia :: Char -> Int
 precedencia '*' = 2
@@ -39,4 +41,4 @@ precedencia _ = 0
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs)
-    where
+    where identificar = precedencia 
