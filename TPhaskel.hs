@@ -37,14 +37,23 @@ precedencia Op '+' = 1
 precedencia Op '-' = 1
 precedencia _ = 0
 
--- 1er empty pila de operadores
--- 
+-- 1er lista, pila de operadores
+-- 2da lista, pila de salida
 
-indetificar :: [Token] -> Stack Token -> [Token] -> [Token]
+esNumero :: Token -> Bool
+esNumero (Num _) = True
+esNumero _       = False
+
+esParentesisA :: Token -> Bool
+esParentesisA (Op '(') = True
+esParentesisA _        = False
+
+
+identificar :: [Token] -> [Token] -> [Token] -> [Token]
 identificar [] [] salida = salida
-identificar [] ops salida = identificar [] ops salida
-identificar (x:xs) ops salida | 
-                              | 
+identificar [] (op:ops) salida = identificar [] ops (salida:op)
+identificar (x:xs) ops salida | esNumero x = identificar xs ops (x : salida)
+                              | esParentesisA = identificar xs (x : ops) salida
                               | 
                               | otherwise =
 
