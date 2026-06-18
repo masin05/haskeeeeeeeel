@@ -17,18 +17,18 @@ tokenizar (x:xs)
 data Arbol a = Vacio | Nodo a ( Arbol a ) ( Arbol a ) deriving ( Show , Eq )
 
 class Stack s where
- empty :: s a
+ sEmpty :: s a
  push :: a -> s a -> s a
  top :: s a -> a
  pop :: s a -> s a
- isEmpty :: s a -> Bool
+ sIsEmpty :: s a -> Bool
 
 instance Stack [] where
- empty = []
+ sEmpty = []
  push = (:)
  top = head
  pop = tail
- isEmpty = null
+ sIsEmpty = null
 
 precedencia :: Char -> Int
 precedencia '*' = 2
