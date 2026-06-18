@@ -37,20 +37,6 @@ precedencia '+' = 1
 precedencia '-' = 1
 precedencia _ = 0
 
-class Queue q where
- empty :: q a
- enqueue :: a → q a → q a
- front :: q a → a
- dequeue :: q a → q a
- isEmpty :: q a → Bool
-
-instance Queue [] where
- empty = []
- enqueue = (:)
- front = last
- dequeue = init
- isEmpty = null
-
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs)
     where
