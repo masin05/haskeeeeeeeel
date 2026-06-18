@@ -54,9 +54,3 @@ identificar (x:xs) ops salida | esNumero x = identificar xs ops (salida ++ [x])
                                                 in  identificar (x:xs) (pop x2) (salida ++ x1)
                               | precedencia (x) <= precedencia (top ops) = identificar xs (x : pop ops) (salida ++ [top ops])
                               | otherwise = identificar xs (x : ops) salida
-
-shuntingYard :: String -> Arbol Token
-shuntingYard xs = identificar (tokenizar xs) empty empty
-    where 
-        identificar [] [] ArbolFinal = ArbolFinal
-
