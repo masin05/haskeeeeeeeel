@@ -17,20 +17,30 @@ tokenizar (x:xs)
 data Arbol a = Vacio | Nodo a ( Arbol a ) ( Arbol a ) deriving ( Show , Eq )
 
 class Stack s where
- empty :: s a
- push :: a -> s a -> s a
- top :: s a -> a
- pop :: s a -> s a
- isEmpty :: s a -> Bool
+  empty :: s a
+  push :: a -> s a -> s a
+  top :: s a -> a
+  pop :: s a -> s a
+  isEmpty :: s a -> Bool
 
-instance Stack [] where
- empty = []
- push = (:)
- top = head
- pop = tail
- isEmpty = null
- 
 data Pila a = PTop a (Pila a) | PEmpty deriving (Show, Eq)
+
+instance Stack Pila where
+  empty :: Pila a
+  empty = PEmpty
+
+  push :: a -> Pila a -> Pila a
+  push = PTop
+
+  top :: Pila a -> a
+  top (PTop x _) = x
+
+  pop :: Pila a -> Pila a
+  pop (PTop _ p) = p
+
+  isEmpty :: Pila a -> Bool
+  isEmpty PEmpty = True
+  isEmpty _ = False
 
 precedencia :: Char -> Int
 precedencia '*' = 2
