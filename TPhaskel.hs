@@ -30,18 +30,18 @@ instance Stack [] where
  pop = tail
  isEmpty = null
 
-precedencia :: Char -> Int
-precedencia '*' = 2
-precedencia '/' = 2
-precedencia '+' = 1
-precedencia '-' = 1
+precedencia :: Token -> Int
+precedencia Op '*' = 2
+precedencia Op '/' = 2
+precedencia Op '+' = 1
+precedencia Op '-' = 1
 precedencia _ = 0
 
 -- 1er empty pila de operadores
 -- 
 
-indetificar :: [Token] -> Stack Pila -> [Token]
-identificar (x:xs) = 
+indetificar :: [Token] -> Stack [Token] -> [Token]
+identificar [] ops = ops -> salida
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs) empty empty
