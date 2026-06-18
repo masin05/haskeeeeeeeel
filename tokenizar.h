@@ -56,4 +56,5 @@ shuntingYard xs = algoritmo
 
 
 
-where algoritmo = tokenizar xs
+where 
+algoritmo = tokenizar xs
