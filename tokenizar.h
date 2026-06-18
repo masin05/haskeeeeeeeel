@@ -45,11 +45,11 @@ class Queue q where
  isEmpty :: q a → Bool
 
 instance Queue [] where
-2 empty = []
-3 enqueue = (:)
-4 front = last
-5 dequeue = init
-6 isEmpty = null
+ empty = []
+ enqueue = (:)
+ front = last
+ dequeue = init
+ isEmpty = null
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs)
