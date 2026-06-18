@@ -40,9 +40,13 @@ precedencia _ = 0
 -- 1er empty pila de operadores
 -- 
 
-indetificar :: [Token] -> Stack [Token] -> [Token] -> [Token]
-identificar [] [] salida = 
-identificar [] (op:ops) salida =identificar salida : op 
+indetificar :: [Token] -> Stack Token -> [Token] -> [Token]
+identificar [] [] salida = salida
+identificar [] ops salida = identificar [] ops salida
+identificar (x:xs) ops salida | 
+                              | 
+                              | 
+                              | otherwise =
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs) empty empty
