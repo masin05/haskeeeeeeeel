@@ -45,15 +45,16 @@ esNumero (Num _) = True
 esNumero _       = False
 
 
-shuntingYard2 :: [Token] -> [Token] -> [Token] -> [Token]
+shuntingYard2 :: [Token] -> [Token] -> [Arbol Token] -> Arbol Token
 shuntingYard2 [] [] salida = salida
-shuntingYard2 [] (op:ops) salida = shuntingYard2 [] ops (salida ++ [op])
-shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (salida ++ [x])
-                              | x == (Op '(') = shuntingYard2 xs (x : ops) salida
-                              | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops
-                                                in  shuntingYard2 xs (pop x2) (salida ++ x1)
-                              | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = shuntingYard2 (x:xs) (pop ops) (salida ++ [top ops])
-                              | otherwise = shuntingYard2 xs (x : ops) salida
+shuntingYard2 [] (op:ops) (der:izq:resto) = shuntingYard2 [] ops (Nodo op der izq : resto)
+shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (Nodo x Vacio Vacio : salida)
+                                | x == (Op '(') = shuntingYard2 xs (x : ops) salida
+                                | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops
+                                                   -- nuevosArboles = foldl (\(der:izq:r) op -> Nodo op izq der : r) salida x1
+                                                  in  shuntingYard2 xs (pop x2) (salida ++ x1)
+                                | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = shuntingYard2 (x:xs) (pop ops) (salida ++ [top ops])
+                                | otherwise = shuntingYard2 xs (x : ops) salida
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = shuntingYard2 (tokenizar xs)
