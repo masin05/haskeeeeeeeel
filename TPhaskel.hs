@@ -23,24 +23,12 @@ class Stack s where
   pop :: s a -> s a
   isEmpty :: s a -> Bool
 
-data Pila a = PTop a (Pila a) | PEmpty deriving (Show, Eq)
-
-instance Stack Pila where
-  empty :: Pila a
-  empty = PEmpty
-
-  push :: a -> Pila a -> Pila a
-  push = PTop
-
-  top :: Pila a -> a
-  top (PTop x _) = x
-
-  pop :: Pila a -> Pila a
-  pop (PTop _ p) = p
-
-  isEmpty :: Pila a -> Bool
-  isEmpty PEmpty = True
-  isEmpty _ = False
+instance Stack [] where
+ empty = []
+ push = (:)
+ top = head
+ pop = tail
+ isEmpty = null
 
 precedencia :: Char -> Int
 precedencia '*' = 2
