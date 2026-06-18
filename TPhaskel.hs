@@ -45,12 +45,15 @@ esNumero (Num _) = True
 esNumero _       = False
 
 
-shuntingYard :: [Token] -> [Token] -> [Token] -> Arbol Token
-shuntingYard [] [] salida = salida
-shuntingYard [] (op:ops) salida = shuntingYard [] ops (salida ++ [op])
-shuntingYard (x:xs) ops salida | esNumero x = shuntingYard xs ops (salida ++ [x])
-                              | x == (Op '(') = shuntingYard xs (x : ops) salida
-                              | x == (Op ')') = let (x1, x2) = span (!='(') ops
-                                                in  shuntingYard (x:xs) (pop x2) (salida ++ x1)
-                              | precedencia (x) <= precedencia (top ops) = shuntingYard xs (x : pop ops) (salida ++ [top ops])
-                              | otherwise = shuntingYard xs (x : ops) salida
+shuntingYard2 :: [Token] -> [Token] -> [Token] -> [Token]
+shuntingYard2 [] [] salida = salida
+shuntingYard2 [] (op:ops) salida = shuntingYard2 [] ops (salida ++ [op])
+shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (salida ++ [x])
+                              | x == (Op '(') = shuntingYard2 xs (x : ops) salida
+                              | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops
+                                                in  shuntingYard2 xs (pop x2) (salida ++ x1)
+                              | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = shuntingYard2 (x:xs) (pop ops) (salida ++ [top ops])
+                              | otherwise = shuntingYard2 xs (x : ops) salida
+
+shuntingYard :: String -> Arbol Token
+shuntingYard xs = shuntingYard2 (tokenizar xs)
