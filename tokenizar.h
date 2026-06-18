@@ -52,5 +52,8 @@ instance Queue [] where
 6 isEmpty = null
 
 shuntingYard :: String -> Arbol Token
-shuntingYard xs = let algoritmo = tokenizar xs
-                  in algoritmo
+shuntingYard xs = algoritmo 
+
+
+
+where algoritmo = tokenizar xs
