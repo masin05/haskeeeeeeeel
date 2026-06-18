@@ -45,12 +45,12 @@ esNumero (Num _) = True
 esNumero _       = False
 
 
-identificar :: [Token] -> [Token] -> [Token] -> [Token]
-identificar [] [] salida = salida
-identificar [] (op:ops) salida = identificar [] ops (salida ++ [op])
-identificar (x:xs) ops salida | esNumero x = identificar xs ops (salida ++ [x])
-                              | x == (Op '(') = identificar xs (x : ops) salida
+shuntingYard :: [Token] -> [Token] -> [Token] -> Arbol Token
+shuntingYard [] [] salida = salida
+shuntingYard [] (op:ops) salida = shuntingYard [] ops (salida ++ [op])
+shuntingYard (x:xs) ops salida | esNumero x = shuntingYard xs ops (salida ++ [x])
+                              | x == (Op '(') = shuntingYard xs (x : ops) salida
                               | x == (Op ')') = let (x1, x2) = span (!='(') ops
-                                                in  identificar (x:xs) (pop x2) (salida ++ x1)
-                              | precedencia (x) <= precedencia (top ops) = identificar xs (x : pop ops) (salida ++ [top ops])
-                              | otherwise = identificar xs (x : ops) salida
+                                                in  shuntingYard (x:xs) (pop x2) (salida ++ x1)
+                              | precedencia (x) <= precedencia (top ops) = shuntingYard xs (x : pop ops) (salida ++ [top ops])
+                              | otherwise = shuntingYard xs (x : ops) salida
