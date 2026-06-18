@@ -52,7 +52,11 @@ precedencia _ = 0
 -- 1er empty pila de operadores
 -- 
 
+indetificar :: [Token] -> Stack Pila -> [Token]
+identificar (x:xs) = 
+
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = identificar (tokenizar xs) empty empty
     where 
         identificar [] [] ArbolFinal = ArbolFinal
+
