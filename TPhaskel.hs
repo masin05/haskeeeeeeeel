@@ -51,7 +51,7 @@ shuntingYard2 [] (op:ops) (der:izq:resto) = shuntingYard2 [] ops (Nodo op der iz
 shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (Nodo x Vacio Vacio : salida) -- se crea una hoja
                                 | x == (Op '(') = shuntingYard2 xs (x : ops) salida  -- se agrega el ( a la pila de ops
                                 | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops -- cuando encuentra un ) comienza a poner operadores en salida hasta el ) y lo descarta
-                                                      nuevosArboles = foldl (\(der:izq:r) op -> Nodo op izq der : r) salida x1
+                                                      nuevosArboles = foldl (\(der:izq:resto) op -> Nodo op izq der : resto) salida x1
                                                   in shuntingYard2 xs (pop x2) nuevosArboles
                                 | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = let (der : izq : resto) = salida 
                                                                                                   in shuntingYard2 (x:xs) (pop ops) (Nodo (top ops) izq der : resto)
@@ -59,3 +59,9 @@ shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (Nodo x Vaci
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = shuntingYard2 (tokenizar xs) [] [] -- las listas en blanco son para el shuntingYard2
+
+--EJERCICIO 2--
+
+-- 1ero identificador, 2do prioridad, 3ero expresion
+data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
+
