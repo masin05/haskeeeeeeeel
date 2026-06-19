@@ -95,9 +95,9 @@ data Heap a = Empty | Node a (Heap a) (Heap a)
 --merge :: Ord a => Heap a -> Heap a -> Heap a
 --merge Empty h2 = h2
 --merge h1 Empty = h1
---merge h1@(Node x1 izq1 der1) h2@(Node x2 izq2 der2)
---    | x1 <= x2  = Node x1 (merge der1 h2) izq1
---    | otherwise = Node x2 (merge der2 h1) izq2
+--merge (Node x1 izq1 der1) (Node x2 izq2 der2)
+--    | x1 <= x2  = Node x1 (merge der1 (Node x2 izq2 der2)) izq1 
+--    | otherwise = Node x2 (merge der2 (Node x1 izq1 der1)) izq2
 
 instance PriorityQueue Heap where
  pqEmpty = Empty
