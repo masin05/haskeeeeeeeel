@@ -65,8 +65,28 @@ shuntingYard xs = shuntingYard2 (tokenizar xs) [] [] -- las listas en blanco son
 -- 1ero identificador, 2do prioridad, 3ero expresion
 data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
 
-instance Eq Job where
-    (J _ p1 _) == (J _ p2 _) = p1 == p2
-
 instance Ord Job where
-    (J _ p1 _) <= (J _ p2 _) = p1 <= p2
+    (<=) :: Job -> Job -> Bool
+    (J _ p1 _) <= (J _ p2 _) = p2 <= p1
+
+class Queue q where
+ qEmpty :: q a
+ qEnqueue :: a -> q a -> q a
+ qFront :: q a -> a
+ qDequeue :: q a -> q a
+ qIsEmpty :: q a -> Bool
+
+instance Queue [] where
+ qEmpty = []
+ qEnqueue = (:)
+ qFront = last
+ qDequeue = init
+ qIsEmpty = null
+
+class PriorityQueue pq where
+ pqEmpty :: Ord a => pq a
+ pqEnqueue :: Ord a => a -> pq a -> pq a
+ pqFront :: Ord a => pq a -> a
+ pqDequeue :: Ord a => pq a -> pq a
+ pqIsEmpty :: Ord a => pq a -> Bool
+
