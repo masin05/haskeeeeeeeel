@@ -96,7 +96,7 @@ merge :: Ord a => Heap a -> Heap a -> Heap a
 merge Empty h2 = h2
 merge h1 Empty = h1
 merge (Node x1 izq1 der1) (Node x2 izq2 der2)
-    | x1 <= x2  = Node x1 (merge der1 (Node x2 izq2 der2)) izq1  --dando vuelta der1  e izq 1Lo que estás haciendo es dar vuelta el árbol
+    | x1 <= x2  = Node x1 (merge der1 (Node x2 izq2 der2)) izq1  --dando vuelta der1  e izq1 Lo que estás haciendo es dar vuelta el árbol
     | otherwise = Node x2 (merge der2 (Node x1 izq1 der1)) izq2  --en cada paso de la recursión por lo que se balancea
 
 instance PriorityQueue Heap where
