@@ -69,28 +69,31 @@ instance Ord Job where
     (<=) :: Job -> Job -> Bool
     (J _ p1 _) <= (J _ p2 _) = p1 <= p2
 
-class Queue q where
- qEmpty :: q a
- qEnqueue :: a -> q a -> q a
- qFront :: q a -> a
- qDequeue :: q a -> q a
- qIsEmpty :: q a -> Bool
+data Heap a = Empty | Node a (Heap a) (Heap a)
 
-instance Queue [] where
- qEmpty = []
- qEnqueue = (:)
- qFront = last
- qDequeue = init
- qIsEmpty = null
+minElement :: Heap a -> a
+minElement Empty = undefined
+minElement (Node x _ _) = x
 
- data Heap a = Empty | Node a (Heap a) (Heap a)
+size :: Heap a -> Int
+size Empty = 0
+size (Node _ l r) = 1 + size l + size r
 
-merge :: Ord a => Heap a -> Heap a -> Heap a
-merge Empty h2 = h2
-merge h1 Empty = h1
-merge (Node x1 izq1 der1) (Node x2 izq2 der2)
-    | x1 <= x2  = Node x1 (merge der1 (Node x2 izq2 der2)) izq1  --dando vuelta der1  e izq1 Lo que estás haciendo es dar vuelta el árbol
-    | otherwise = Node x2 (merge der2 (Node x1 izq1 der1)) izq2  --en cada paso de la recursión por lo que se balancea
+insert :: Ord a => a -> Heap a -> Heap a
+insert x Empty = Node x Empty Empty
+insert x (Node y l r)
+ | x < y && size l <= size r = Node x (insert y l) r
+ | x < y && size l > size r = Node x l (insert y r)
+ | x >= y && size l <= size r = Node y (insert x l) r
+ | x >= y && size l > size r = Node y l (insert x r)
+
+deleteMin :: Ord a => Heap a -> Heap a
+deleteMin Empty = Empty
+deleteMin (Node _ Empty r) = r
+deleteMin (Node _ l Empty) = l 
+deleteMin (Node d (Node x ll lr) (Node y rl rr))
+ | x <= y = Node x (deleteMin (Node d ll lr)) (Node y rl rr)
+ | otherwise = Node y (Node x ll lr) (deleteMin (Node d rl rr))
 
 class PriorityQueue pq where
  pqEmpty :: Ord a => pq a
@@ -101,11 +104,9 @@ class PriorityQueue pq where
 
 instance PriorityQueue Heap where
  pqEmpty = Empty
- pqEnqueue x pq = merge (Node x Empty Empty) pq 
- pqFront (Empty) = Empty
- pqFront (Node x _ _) = x
- pqDequeue Empty = Empty
- pqDequeue (Node _ izq der) = merge izq der
+ pqEnqueue = insert 
+ pqFront = minElement
+ pqDequeue = deleteMin
  pqIsEmpty Empty = True
  pqIsEmpty _ = False 
 
