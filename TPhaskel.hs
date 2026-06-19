@@ -50,7 +50,7 @@ shuntingYard2 [] [] [salida] = salida
 shuntingYard2 [] (op:ops) (der:izq:resto) = shuntingYard2 [] ops (Nodo op der izq : resto)
 shuntingYard2 (x:xs) ops salida | esNumero x = shuntingYard2 xs ops (Nodo x Vacio Vacio : salida) -- se crea una hoja
                                 | x == (Op '(') = shuntingYard2 xs (x : ops) salida  -- se agrega el ( a la pila de ops
-                                | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops -- cuando encuentra un ) comienza a poner operadores en salida hasta el ) y lo descarta
+                                | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops -- cuando encuentra un ) comienza a poner operadores en salida hasta el ( y lo descarta
                                                       nuevosArboles = foldl (\(der:izq:resto) op -> Nodo op izq der : resto) salida x1
                                                   in shuntingYard2 xs (pop x2) nuevosArboles
                                 | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = let (der : izq : resto) = salida 
