@@ -35,7 +35,7 @@ precedencia (Op '*') = 2
 precedencia (Op '/') = 2
 precedencia (Op '+') = 1
 precedencia (Op '-') = 1
-precedencia _ = 0
+precedencia _ = 3
 
 -- 1er lista, pila de operadores
 -- 2da lista, pila de salida
