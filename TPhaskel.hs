@@ -67,7 +67,7 @@ data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
 
 instance Ord Job where
     (<=) :: Job -> Job -> Bool
-    (J _ p1 _) <= (J _ p2 _) = p2 <= p1
+    (J _ p1 _) <= (J _ p2 _) = p1 <= p2
 
 class Queue q where
  qEmpty :: q a
