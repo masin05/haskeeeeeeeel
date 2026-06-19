@@ -83,14 +83,7 @@ instance Queue [] where
  qDequeue = init
  qIsEmpty = null
 
-class PriorityQueue pq where
- pqEmpty :: Ord a => pq a
- pqEnqueue :: Ord a => a -> pq a -> pq a
- pqFront :: Ord a => pq a -> a
- pqDequeue :: Ord a => pq a -> pq a
- pqIsEmpty :: Ord a => pq a -> Bool
-
-data Heap a = Empty | Node a (Heap a) (Heap a)
+ data Heap a = Empty | Node a (Heap a) (Heap a)
 
 merge :: Ord a => Heap a -> Heap a -> Heap a
 merge Empty h2 = h2
@@ -99,10 +92,31 @@ merge (Node x1 izq1 der1) (Node x2 izq2 der2)
     | x1 <= x2  = Node x1 (merge der1 (Node x2 izq2 der2)) izq1  --dando vuelta der1  e izq1 Lo que estás haciendo es dar vuelta el árbol
     | otherwise = Node x2 (merge der2 (Node x1 izq1 der1)) izq2  --en cada paso de la recursión por lo que se balancea
 
+class PriorityQueue pq where
+ pqEmpty :: Ord a => pq a
+ pqEnqueue :: Ord a => a -> pq a -> pq a
+ pqFront :: Ord a => pq a -> a
+ pqDequeue :: Ord a => pq a -> pq a
+ pqIsEmpty :: Ord a => pq a -> Bool --averiguar si hace falta sacar el Ord a o no
+
 instance PriorityQueue Heap where
  pqEmpty = Empty
  pqEnqueue x pq = merge (Node x Empty Empty) pq 
+ pqFront (Empty) = Empty
  pqFront (Node x _ _) = x
+ pqDequeue Empty = Empty
  pqDequeue (Node _ izq der) = merge izq der
  pqIsEmpty Empty = True
- pqIsEmpty _ = False
+ pqIsEmpty _ = False 
+
+heapToList :: Heap a -> [a]
+heapToList Empty = []
+heapToList (Node x izq der) = x : (heapToList izq ++ heapToList der)
+
+cambiarprioridad :: Int -> Int -> Heap Job -> Heap Job
+cambiarprioridad idABuscar pNuevo heap = let listaJobs = heapToList heap
+                                             listaModificada = map actualizar listaJobs
+                                             actualizar (J id p arbol) 
+                                              | id == idABuscar = (J id pNuevo arbol)
+                                              | otherwise       = (J id p arbol)
+                                         in foldr pqEnqueue Empty listaModificada
