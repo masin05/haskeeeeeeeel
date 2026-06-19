@@ -67,3 +67,6 @@ data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
 
 instance Eq Job where
     (J _ p1 _) == (J _ p2 _) = p1 == p2
+
+instance Ord Job where
+    (J _ p1 _) <= (J _ p2 _) = p1 <= p2
