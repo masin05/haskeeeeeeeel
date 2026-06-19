@@ -101,4 +101,12 @@ merge (Node x1 izq1 der1) (Node x2 izq2 der2)
 
 instance PriorityQueue Heap where
  pqEmpty = Empty
- pqEnqueue = 
+ 
+ pqEnqueue x pq = merge (Node x Empty Empty) pq 
+ 
+ pqFront (Node x _ _) = x
+ 
+ pqDequeue (Node _ izq der) = merge izq der
+ 
+ pqIsEmpty Empty = True
+ pqIsEmpry _ = False
