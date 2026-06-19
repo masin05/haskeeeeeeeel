@@ -65,3 +65,5 @@ shuntingYard xs = shuntingYard2 (tokenizar xs) [] [] -- las listas en blanco son
 -- 1ero identificador, 2do prioridad, 3ero expresion
 data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
 
+instance Eq Job where
+    (J _ p1 _) == (J _ p2 _) = p1 == p2
