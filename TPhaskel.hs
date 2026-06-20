@@ -2,7 +2,7 @@ import Data.Char
 
 --TOKENIZACION
 
-data Token = Num Float | Op Char deriving ( Show , Eq )
+data Token = Num Float | Op Char deriving (Show , Eq)
 
 tokenizar :: String -> [Token]
 tokenizar [] = []
@@ -14,7 +14,7 @@ tokenizar (x:xs)
 
 --CONSTRUCCIÒN DEL Arbol
 
-data Arbol a = Vacio | Nodo a ( Arbol a ) ( Arbol a ) deriving ( Show , Eq )
+data Arbol a = Vacio | Nodo a (Arbol a) (Arbol a) deriving (Show , Eq)
 
 class Stack s where
   empty :: s a
@@ -63,7 +63,7 @@ shuntingYard xs = shuntingYard2 (tokenizar xs) [] [] -- las listas en blanco son
 --EJERCICIO 2--
 
 -- 1ero identificador, 2do prioridad, 3ero expresion
-data Job = J Int Int ( Arbol Token ) deriving ( Show , Eq )
+data Job = J Int Int (Arbol Token) deriving (Show ,Eq)
 
 instance Ord Job where
     (<=) :: Job -> Job -> Bool
@@ -132,7 +132,7 @@ evaluarArbol (Nodo (Op operador) izq der) | operador == '+' = evaluarArbol izq +
                                           | operador == '*' = evaluarArbol izq * evaluarArbol der
                                           | otherwise       = evaluarArbol izq / evaluarArbol der
 
-procesarQueue :: ( PriorityQueue pq ) => pq Job -> [ Float ]
+procesarQueue :: (PriorityQueue pq) => pq Job -> [Float]
 procesarQueue q | pqIsEmpty q = []
                 | otherwise = let jobActual = pqFront q
                                   J _ _ arbol = jobActual
@@ -142,14 +142,12 @@ procesarQueue q | pqIsEmpty q = []
 
 --EJERCICIO 4--
 
---crearHeapFloat :: [Float] -> Heap Float
---crearHeapFloat lista = foldl (\heapAcumulado x -> pqEnqueue x heapAcumulado) pqEmpty lista
+crearHeapFloat :: (PriorityQueue pq  => pq Job -> Heap Float
+crearHeapFloat xs = foldl (\heapAcumulado x -> pqEnqueue x heapAcumulado) pqEmpty lista
+                       where lista = procesarQueue xs
 
-heapJobToHeapFloat :: Heap Job -> Heap Float
-heapJobToHeapFloat Empty = Empty
-heapJobToHeapFloat 
-
-rangoQuery :: Float -> Float -> Heap Float -> [ Float ]
-rangoQuery min max (Nodo x izq der) | x > maximo = []
-                                    | x < minimo = rangoQuery min max izq ++ rangoQuery min max der
+rangoQuery :: Float -> Float -> Heap Float -> [Float]
+rangoQuery _ _ Empty = []
+rangoQuery min max (Node x izq der) | x > max = []
+                                    | x < min = rangoQuery min max izq ++ rangoQuery min max der
                                     | otherwise  = x : (rangoQuery min max izq ++ rangoQuery min max der)
