@@ -142,15 +142,14 @@ procesarQueue q | pqIsEmpty q = []
 
 --EJERCICIO 4--
 
+--crearHeapFloat :: [Float] -> Heap Float
+--crearHeapFloat lista = foldl (\heapAcumulado x -> pqEnqueue x heapAcumulado) pqEmpty lista
+
 heapJobToHeapFloat :: Heap Job -> Heap Float
 heapJobToHeapFloat Empty = Empty
 heapJobToHeapFloat 
 
 rangoQuery :: Float -> Float -> Heap Float -> [ Float ]
-rangoQuery min max heap let 
-                            (Nodo q izq der) = heap
-                            jobActual = pqFront q
-                            J _ _ arbol = jobActual
-                            |
-                            |
-                            | otherwise 
+rangoQuery min max (Nodo x izq der) | x > maximo = []
+                                    | x < minimo = rangoQuery min max izq ++ rangoQuery min max der
+                                    | otherwise  = x : (rangoQuery min max izq ++ rangoQuery min max der)
