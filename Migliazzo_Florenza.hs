@@ -41,17 +41,17 @@ esNumero :: Token -> Bool
 esNumero (Num _) = True
 esNumero _       = False
 
-auxShuntingYard2 :: [Token] -> [Token] -> [Arbol Token] -> Arbol Token
-auxShuntingYard2 [] [] [salida] = salida
-auxShuntingYard2 [] (op:ops) (der:izq:resto) = auxShuntingYard2 [] ops (Nodo op izq der : resto)
-auxShuntingYard2 (x:xs) ops salida | esNumero x = auxShuntingYard2 xs ops (Nodo x Vacio Vacio : salida)
-                                   | x == (Op '(') = auxShuntingYard2 xs (x : ops) salida
+auxShuntingYard :: [Token] -> [Token] -> [Arbol Token] -> Arbol Token
+auxShuntingYard [] [] [salida] = salida
+auxShuntingYard [] (op:ops) (der:izq:resto) = auxShuntingYard [] ops (Nodo op izq der : resto)
+auxShuntingYard (x:xs) ops salida | esNumero x = auxShuntingYard xs ops (Nodo x Vacio Vacio : salida)
+                                   | x == (Op '(') = auxShuntingYard xs (x : ops) salida
                                    | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops
                                                          nuevosArboles = foldl (\(der:izq:resto) op -> Nodo op izq der : resto) salida x1
-                                                     in auxShuntingYard2 xs (pop x2) nuevosArboles
+                                                     in auxShuntingYard xs (pop x2) nuevosArboles
                                    | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = let (der : izq : resto) = salida 
-                                                                                                     in auxShuntingYard2 (x:xs) (pop ops) (Nodo (top ops) izq der : resto)
-                                   | otherwise = auxShuntingYard2 xs (x:ops) salida
+                                                                                                     in auxShuntingYard (x:xs) (pop ops) (Nodo (top ops) izq der : resto)
+                                   | otherwise = auxShuntingYard xs (x:ops) salida
 
 shuntingYard :: String -> Arbol Token
 shuntingYard xs = auxShuntingYard2 (tokenizar xs) [] []
