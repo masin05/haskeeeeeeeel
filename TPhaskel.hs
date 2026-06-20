@@ -122,6 +122,8 @@ cambiarprioridad idABuscar pNuevo heap = let listaJobs = heapToList heap
                                               | otherwise       = (J id p arbol)
                                          in foldr pqEnqueue Empty listaModificada
 
+--EJERCICIO 3--
+
 evaluarArbol :: Arbol Token -> Float
 evaluarArbol Vacio = 0.0
 evaluarArbol (Nodo (Num x) Vacio Vacio) = x
@@ -137,3 +139,18 @@ procesarQueue q | pqIsEmpty q = []
                                   resultado = evaluarArbol arbol
                                   cola = pqDequeue q
                               in resultado : procesarQueue cola
+
+--EJERCICIO 4--
+
+heapJobToHeapFloat :: Heap Job -> Heap Float
+heapJobToHeapFloat Empty = Empty
+heapJobToHeapFloat 
+
+rangoQuery :: Float -> Float -> Heap Float -> [ Float ]
+rangoQuery min max heap let 
+                            (Nodo q izq der) = heap
+                            jobActual = pqFront q
+                            J _ _ arbol = jobActual
+                            |
+                            |
+                            | otherwise 
