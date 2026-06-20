@@ -1,6 +1,8 @@
-import Data.Char
+--TP Trabajo Practico: Pipeline de Procesamiento Numerico
 
 --EJERCICIO 1--
+
+import Data.Char
 
 data Token = Num Float | Op Char deriving (Show , Eq)
 
