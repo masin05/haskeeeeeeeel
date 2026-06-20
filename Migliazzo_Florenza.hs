@@ -109,8 +109,9 @@ heapToList :: Heap a -> [a]
 heapToList Empty = []
 heapToList (Node x izq der) = x : (heapToList izq ++ heapToList der)
 
-cambiarprioridad :: Int -> Int -> Heap Job -> Heap Job
-cambiarprioridad idABuscar pNuevo heap = let listaJobs = heapToList heap
+cambiarPrioridad :: Int -> Int -> Heap Job -> Heap Job
+cambiarPrioridad _ _ Empty = Empty
+cambiarPrioridad idABuscar pNuevo heap = let listaJobs = heapToList heap
                                              listaModificada = map actualizar listaJobs
                                              actualizar (J id p arbol) 
                                               | id == idABuscar = (J id pNuevo arbol)
