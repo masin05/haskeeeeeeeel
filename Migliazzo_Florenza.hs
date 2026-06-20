@@ -142,7 +142,7 @@ procesarQueue q | pqIsEmpty q = []
 
 --EJERCICIO 4--
 
-crearHeapFloat :: (PriorityQueue pq  => pq Job -> Heap Float
+crearHeapFloat :: (PriorityQueue pq)  => pq Job -> Heap Float
 crearHeapFloat xs = foldl (\heapAcumulado x -> pqEnqueue x heapAcumulado) pqEmpty lista
                        where lista = procesarQueue xs
 
