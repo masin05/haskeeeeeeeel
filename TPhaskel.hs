@@ -123,6 +123,7 @@ cambiarprioridad idABuscar pNuevo heap = let listaJobs = heapToList heap
                                          in foldr pqEnqueue Empty listaModificada
 
 evaluarArbol :: Arbol Token -> Float
+evaluarArbol Vacio = 0.0
 evaluarArbol (Nodo (Num x) Vacio Vacio) = x
 evaluarArbol (Nodo (Op operador) izq der) | operador == '+' = evaluarArbol izq + evaluarArbol der
                                           | operador == '-' = evaluarArbol izq - evaluarArbol der
@@ -130,8 +131,8 @@ evaluarArbol (Nodo (Op operador) izq der) | operador == '+' = evaluarArbol izq +
                                           | otherwise       = evaluarArbol izq / evaluarArbol der
 
 procesarQueue :: ( PriorityQueue pq ) => pq Job -> [ Float ]
-procesarQueue q | pqEmpty q = []
-                | otherwise = let pqFront q = jobActual
+procesarQueue q | pqIsEmpty q = []
+                | otherwise = let jobActual = pqFront q
                                   J _ _ arbol = jobActual
                                   resultado = evaluarArbol arbol
                                   cola = pqDequeue q
