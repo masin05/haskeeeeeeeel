@@ -47,7 +47,7 @@ auxShuntingYard [] (op:ops) (der:izq:resto) = auxShuntingYard [] ops (Nodo op iz
 auxShuntingYard (x:xs) ops salida | esNumero x = auxShuntingYard xs ops (Nodo x Vacio Vacio : salida)
                                    | x == (Op '(') = auxShuntingYard xs (x : ops) salida
                                    | x == (Op ')') = let (x1, x2) = span (\op -> op /= Op '(') ops
-                                                         nuevosArboles = foldl (\(der:izq:resto) op -> Nodo op izq der : resto) salida x1
+                                                         nuevosArboles = foldl (\(der:izq:resto) op -> (Nodo op izq der : resto) salida x1
                                                      in auxShuntingYard xs (pop x2) nuevosArboles
                                    | not (isEmpty ops) && precedencia (x) <= precedencia (top ops) = let (der : izq : resto) = salida 
                                                                                                      in auxShuntingYard (x:xs) (pop ops) (Nodo (top ops) izq der : resto)
