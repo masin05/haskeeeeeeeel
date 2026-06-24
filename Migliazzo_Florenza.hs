@@ -54,7 +54,7 @@ auxShuntingYard (x:xs) ops salida | esNumero x = auxShuntingYard xs ops (Nodo x 
                                    | otherwise = auxShuntingYard xs (x:ops) salida
 
 shuntingYard :: String -> Arbol Token
-shuntingYard xs = auxShuntingYard2 (tokenizar xs) [] []
+shuntingYard xs = auxShuntingYard (tokenizar xs) [] []
 
 --EJERCICIO 2--
 
